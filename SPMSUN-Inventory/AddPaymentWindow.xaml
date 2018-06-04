@@ -1,0 +1,32 @@
+﻿<controls:MetroWindow x:Class="SPMSUN_Inventory.AddPaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SPMSUN_Inventory"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Height="514.681" Width="596.809" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" Background="BurlyWood" FontFamily="Consolas" FontSize="17">
+    <Grid>
+        <Label x:Name="label" Content="Date:" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" FontSize="15" Width="87" HorizontalContentAlignment="Right" Height="29"/>
+        <DatePicker x:Name="datePaid" HorizontalAlignment="Left" Margin="102,20,0,0" VerticalAlignment="Top" FontSize="15" Height="29" Width="233"/>
+        <Label x:Name="label1" Content="Amount:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" FontSize="14" Width="87" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtAmount" controls:TextBoxHelper.Watermark="Amount" HorizontalAlignment="Left" Height="29" Margin="102,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" FontSize="15" FontFamily="Consolas" PreviewTextInput="txtAmount_PreviewTextInput"/>
+        <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="340,20,0,0" VerticalAlignment="Top" Width="63" Height="63" Click="btnAdd_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
+        <DataGrid x:Name="dgvPaymentHistory" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Height="160" Width="571" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Amount Paid" Binding="{Binding AmountPaid}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="NoteS" Binding="{Binding Notes}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="label3" Content="Total Amount Paid:" HorizontalAlignment="Left" Margin="273,355,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="lblTotalPaid" Content="" HorizontalAlignment="Left" Margin="436,353,0,0" VerticalAlignment="Top" Height="30" FontSize="15"/>
+        <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="10,401,0,0" VerticalAlignment="Top" Width="75" Height="75" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black" FontSize="15" Click="btnDelete_Click"/>
+        <Label x:Name="label2" Content="Notes:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="87" HorizontalContentAlignment="Right" FontSize="14"/>
+        <TextBox x:Name="txtNotes" HorizontalAlignment="Left" Height="73" Margin="102,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" FontFamily="Consolas" FontSize="14"/>
+
+    </Grid>
+</controls:MetroWindow>

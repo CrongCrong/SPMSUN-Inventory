@@ -1,0 +1,49 @@
+﻿<Controls:MetroWindow x:Class="SPMSUN_Inventory.PackageDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:SPMSUN_Inventory"
+        mc:Ignorable="d"
+        Title="" Height="736.323" Width="851.355" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF097054" FontFamily="Consolas">
+    <Grid>
+        <Label x:Name="label" Content="Package Name:" HorizontalAlignment="Left" Margin="50,26,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"
+               Width="159" FontSize="15" Height="30"/>
+        <TextBox x:Name="txtPackageName" Controls:TextBoxHelper.Watermark="Package name" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas"/>
+        <Label x:Name="label1" Content="Products:" HorizontalAlignment="Left" Margin="84,227,0,0" VerticalAlignment="Top" FontSize="15" Width="125" HorizontalContentAlignment="Right" Height="30"/>
+        <ComboBox x:Name="cmbProducts" HorizontalAlignment="Left" Margin="214,227,0,0" VerticalAlignment="Top" Width="211" Height="30" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
+        <Button x:Name="btnAdd" Content="ADD" HorizontalAlignment="Left" Margin="429,262,0,0" VerticalAlignment="Top" Width="75" Click="btnAdd_Click" Style="{DynamicResource SquareButtonStyle}" Height="30"/>
+        <DataGrid x:Name="dgvProductLink" HorizontalAlignment="Left" Margin="10,301,0,0" VerticalAlignment="Top" Height="240" Width="521" AutoGenerateColumns="False" FontSize="15">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="label2" Content="QTY:" HorizontalAlignment="Left" Margin="166,262,0,0" VerticalAlignment="Top" FontSize="15" Height="30"/>
+        <TextBox x:Name="txtQty" Controls:TextBoxHelper.Watermark="Qty" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="672,0,0,10" Width="75" Click="btnSave_Click" Height="75" VerticalAlignment="Bottom" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" Margin="752,0,0,10" Width="75" Click="btnClose_Click" Height="75" VerticalAlignment="Bottom" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="672,0,0,10" Width="75" Click="btnUpdate_Click" Height="75" VerticalAlignment="Bottom" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
+        <Label x:Name="label3" Content="Non-Member Price:" HorizontalAlignment="Left" Margin="50,61,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Width="159" Height="30"/>
+        <TextBox x:Name="txtNonMemberPrice" Controls:TextBoxHelper.Watermark="Non-member price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" PreviewTextInput="txtNonMemberPrice_PreviewTextInput" FontFamily="Consolas"/>
+        <Label x:Name="label4" Content="Member Price:" HorizontalAlignment="Left" Margin="50,96,0,0" VerticalAlignment="Top" FontSize="15" Width="159" HorizontalContentAlignment="Right" Height="30"/>
+        <TextBox x:Name="txtMemberPrice" Controls:TextBoxHelper.Watermark="Member price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" PreviewTextInput="txtMemberPrice_PreviewTextInput" FontFamily="Consolas"/>
+        <Label x:Name="label5" Content="Home Stockist Price:" HorizontalAlignment="Left" Margin="33,131,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Width="176" Height="30"/>
+        <TextBox x:Name="txtHomePrice" Controls:TextBoxHelper.Watermark="Home stockist price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" PreviewTextInput="txtHomePrice_PreviewTextInput" FontFamily="Consolas"/>
+        <Label x:Name="label6" Content="Mega Stockist Price:" HorizontalAlignment="Left" Margin="33,166,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Width="176" Height="30"/>
+        <TextBox x:Name="txtMegaPrice" Controls:TextBoxHelper.Watermark="Mega stockist price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="214,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" PreviewTextInput="txtMegaPrice_PreviewTextInput" FontFamily="Consolas"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="10,546,0,0" VerticalAlignment="Top" Height="65" Width="65" Click="btnRemove_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
+        <Label x:Name="label7" Content="Depot Price:" HorizontalAlignment="Left" Margin="435,26,0,0" VerticalAlignment="Top" FontSize="15" Height="30" Width="176" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtDepotPrice" Controls:TextBoxHelper.Watermark="Depot price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="616,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas" PreviewTextInput="txtDepotPrice_PreviewTextInput"/>
+        <Label x:Name="label8" Content="Employee Price:" HorizontalAlignment="Left" Margin="435,61,0,0" VerticalAlignment="Top" FontSize="15" Height="30" Width="176" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtEmployeePrice" Controls:TextBoxHelper.Watermark="Employee price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="616,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas" PreviewTextInput="txtEmployeePrice_PreviewTextInput"/>
+        <Label x:Name="label9" Content="MFG:" HorizontalAlignment="Left" Margin="435,96,0,0" VerticalAlignment="Top" FontSize="15" Height="30" Width="176" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtMFG" Controls:TextBoxHelper.Watermark="MFG" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="616,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas" Text="0" />
+        <Label x:Name="label10" Content="Unilevel:" HorizontalAlignment="Left" Margin="435,131,0,0" VerticalAlignment="Top" FontSize="15" Height="30" Width="176" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtUnilevel" Controls:TextBoxHelper.Watermark="Unilevel" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="616,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas" PreviewTextInput="txtUnilevel_PreviewTextInput" Text="0"/>
+        <Label x:Name="label11" Content="LB:" HorizontalAlignment="Left" Margin="435,166,0,0" VerticalAlignment="Top" FontSize="15" Height="30" Width="176" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtLB" Controls:TextBoxHelper.Watermark="LB" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="616,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="15" FontFamily="Consolas" PreviewTextInput="txtLB_PreviewTextInput" Text="0" />
+
+    </Grid>
+</Controls:MetroWindow>

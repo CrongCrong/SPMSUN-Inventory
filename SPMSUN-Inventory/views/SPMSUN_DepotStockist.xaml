@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="SPMSUN_Inventory.views.SPMSUN_DepotStockist"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SPMSUN_Inventory.views"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             Width="1172.533" Height="608" Loaded="UserControl_Loaded" Background="White">
+    
+    <Grid>
+        
+        <DataGrid 
+            x:Name="dgvclientmega" 
+            HorizontalAlignment="Left" 
+            Margin="10,148,0,0"
+            Grid.Row="0"
+            VerticalAlignment="Top" 
+            Height="266" Width="451" 
+            AutoGenerateColumns="False" 
+            Style="{DynamicResource AzureDataGrid}"
+            RenderOptions.ClearTypeHint="Enabled"
+            TextOptions.TextFormattingMode="Display">
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Client Name" Binding="{Binding Fullname}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Contact No." Binding="{Binding ContactNo}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="dgvdr" HorizontalAlignment="Left" Margin="563,148,0,0" VerticalAlignment="Top" Height="266" Width="386" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="DR #" Binding="{Binding DRNumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Fully Paid" Binding="{Binding ifPaid}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Label x:Name="label" Content="Search" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Courier New"/>
+        <Label x:Name="label1" Content="Name:" HorizontalAlignment="Left" Margin="15,33,0,0" VerticalAlignment="Top" Width="73" HorizontalContentAlignment="Right" FontSize="15" Background="Blue" Foreground="White"/>
+        <TextBox x:Name="searchName" HorizontalAlignment="Left" Height="30" Margin="88,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="229"/>
+        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="322,28,0,0" 
+            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
+        <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="392,28,0,0" 
+            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnReset_Click" />
+        <Button x:Name="btnViewDR" Content="View DR" HorizontalAlignment="Left" Margin="10,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnViewDR_Click" />
+        <Button x:Name="btnDRDetails" Content="Details" HorizontalAlignment="Left" Margin="563,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnDRDetails_Click" />
+
+        <Button x:Name="btnAddClient" Content="Add Client" HorizontalAlignment="Left" Margin="96,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnAddClient_Click" />
+
+        <Button x:Name="btnEditClient" Content="Edit Client" HorizontalAlignment="Left" Margin="182,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEditClient_Click" />
+
+        <Button x:Name="btnAddDR" Content="Add D.R." HorizontalAlignment="Left" Margin="649,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnAddDR_Click"  />
+        <Button x:Name="btnEditDR" Content="Edit D.R." HorizontalAlignment="Left" Margin="735,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEditDR_Click" />
+        <Button x:Name="btnDeleteDR" Content="Delete D.R." HorizontalAlignment="Left" Margin="821,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnDeleteDR_Click" />
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="907,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnCancel_Click" />
+
+        <Controls:Flyout x:Name="flyout"  Position="Right" Theme="Dark" IsOpen="False" Margin="466,0,0,0" IsVisibleChanged="flyout_IsVisibleChanged">
+            <StackPanel x:Name="stackPan" Height="523" Margin="10,0" VerticalAlignment="Top" >
+                <Grid Height="518" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label x:Name="lblDrNumber" Content="DR NUMBER" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="OrangeRed" FontSize="16" FontFamily="Courier New" FontWeight="Bold"/>
+                        <Label x:Name="lblClientName" Content="Client Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,33,0,0" Foreground="OrangeRed" FontSize="15" FontFamily="Courier New" FontWeight="Bold"/>
+                        <DataGrid x:Name="dgvPackages" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" Height="193" Width="308" AutoGenerateColumns="False">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Package" Binding="{Binding Name}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Amount" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True" />
+                                <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Label x:Name="lblTotal" Content="0.0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,292,0,0" FontSize="15" FontFamily="Courier New" Width="109" Foreground="OrangeRed" FontWeight="Bold"/>
+                        <Label x:Name="label2" Content="Total:" HorizontalAlignment="Left" Margin="118,292,0,0" VerticalAlignment="Top" FontSize="15" FontFamily="Courier New" Foreground="OrangeRed" FontWeight="Bold"/>
+                        <Label x:Name="lblBalance" Content="" HorizontalAlignment="Left" Margin="187,324,-35,0" VerticalAlignment="Top" FontSize="17" Width="189"/>
+                        <Label x:Name="label3" Content="Remaining balance:" HorizontalAlignment="Left" Margin="10,324,0,0" VerticalAlignment="Top" FontSize="15" FontFamily="Courier New" FontWeight="Bold" Foreground="OrangeRed"/>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Label x:Name="lblDate" Content="DATE" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-267,0" Width="272" Foreground="OrangeRed" FontSize="15" FontFamily="Courier New" FontWeight="Bold"/>
+                        <DataGrid x:Name="dgvProducts" Margin="10,86,-325,238" VerticalAlignment="Top" Height="193" Width="308" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Product" Binding="{Binding Description}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Amount" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Label x:Name="label4" Content="PAYMENT HISTORY:" HorizontalAlignment="Left" Margin="16,284,-346,0" VerticalAlignment="Top" Width="335" FontFamily="Courier New" Foreground="OrangeRed" FontWeight="Bold" FontSize="15"/>
+                        <DataGrid x:Name="dgvPaymentHistory" HorizontalAlignment="Left" Margin="16,316,-346,0" VerticalAlignment="Top" Height="160" Width="335" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Date" Binding="{Binding Date}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Amount Paid" Binding="{Binding AmountPaid}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="NoteS" Binding="{Binding Notes}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </Controls:Flyout>
+        <Label x:Name="lblCientNameDisplay" Content="" HorizontalAlignment="Left" Margin="563,43,0,0" VerticalAlignment="Top" FontSize="30" FontFamily="Courier New" FontWeight="Bold"/>
+        <Button x:Name="btnDelete" Content="Delete&#xA; Client" HorizontalAlignment="Left" Margin="268,419,0,0" 
+            VerticalAlignment="Top" Width="81" Height="81" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnDelete_Click" />
+    </Grid>
+</UserControl>
