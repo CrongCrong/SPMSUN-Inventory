@@ -3,19 +3,9 @@ using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
 using SPMSUN_Inventory.classes;
 using SPMSUN_Inventory.views;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SPMSUN_Inventory
 {
@@ -28,17 +18,19 @@ namespace SPMSUN_Inventory
         {
             InitializeComponent();
         }
-     
+
         ConnectionDB conDB;
         HomeStockistModel homeStockist;
         MegaStockistModel megaStockist;
         DepotStockistModel depotStockist;
         EmployeeModel employeeStockist;
+        MembersModel membersModel;
 
         SPMSUN_Stockist spmsun_home;
         SPMSUN_MegaStockist spmsun_mega;
         SPMSUN_DepotStockist spmsun_depot;
         SPMSUN_Employees spmsun_employees;
+        SPMSUN_Members spmsun_members;
 
         public AddClientWindow(SPMSUN_Stockist ss)
         {
@@ -64,6 +56,12 @@ namespace SPMSUN_Inventory
             InitializeComponent();
         }
 
+        public AddClientWindow(SPMSUN_Members mm)
+        {
+            spmsun_members = mm;
+            InitializeComponent();
+        }
+
         public AddClientWindow(SPMSUN_Stockist ss, HomeStockistModel hsm)
         {
             homeStockist = hsm;
@@ -74,7 +72,7 @@ namespace SPMSUN_Inventory
         public AddClientWindow(SPMSUN_MegaStockist ms, MegaStockistModel msm)
         {
             megaStockist = msm;
-            spmsun_mega = ms; ; 
+            spmsun_mega = ms; ;
             InitializeComponent();
         }
 
@@ -92,11 +90,18 @@ namespace SPMSUN_Inventory
             InitializeComponent();
         }
 
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {        
-            btnUpdate.Visibility = Visibility.Hidden;   
+        public AddClientWindow(SPMSUN_Members mm, MembersModel memM)
+        {
+            spmsun_members = mm;
+            membersModel = memM;
+            InitializeComponent();
+        }
 
-            if(homeStockist != null)
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            btnUpdate.Visibility = Visibility.Hidden;
+
+            if (homeStockist != null)
             {
                 txtFirstName.Text = homeStockist.FirstName;
                 txtLastName.Text = homeStockist.LastName;
@@ -105,7 +110,8 @@ namespace SPMSUN_Inventory
 
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
-            }else if( megaStockist != null)
+            }
+            else if (megaStockist != null)
             {
                 txtFirstName.Text = megaStockist.FirstName;
                 txtLastName.Text = megaStockist.LastName;
@@ -114,7 +120,8 @@ namespace SPMSUN_Inventory
 
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
-            }else if(depotStockist != null)
+            }
+            else if (depotStockist != null)
             {
                 txtFirstName.Text = depotStockist.FirstName;
                 txtLastName.Text = depotStockist.LastName;
@@ -123,7 +130,8 @@ namespace SPMSUN_Inventory
 
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
-            }else if(employeeStockist != null)
+            }
+            else if (employeeStockist != null)
             {
                 txtFirstName.Text = employeeStockist.FirstName;
                 txtLastName.Text = employeeStockist.LastName;
@@ -133,12 +141,22 @@ namespace SPMSUN_Inventory
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
             }
+            else if(membersModel != null)
+            {
+                txtFirstName.Text = membersModel.FirstName;
+                txtLastName.Text = membersModel.LastName;
+                txtContactNo.Text = membersModel.ContactNo;
+                txtAddress.Text = membersModel.Address;
+
+                btnUpdate.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Hidden;
+            }
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             bool x = await checkFields();
-            if(spmsun_home != null)
+            if (spmsun_home != null)
             {
                 if (x)
                 {
@@ -147,7 +165,8 @@ namespace SPMSUN_Inventory
                     await this.ShowMessageAsync("ADD CLIENT", "Record successfully saved!");
                     this.Close();
                 }
-            }else if(spmsun_mega != null)
+            }
+            else if (spmsun_mega != null)
             {
                 if (x)
                 {
@@ -156,7 +175,8 @@ namespace SPMSUN_Inventory
                     await this.ShowMessageAsync("ADD CLIENT", "Record successfully saved!");
                     this.Close();
                 }
-            }else if (spmsun_depot != null)
+            }
+            else if (spmsun_depot != null)
             {
                 if (x)
                 {
@@ -165,7 +185,8 @@ namespace SPMSUN_Inventory
                     await this.ShowMessageAsync("ADD CLIENT", "Record successfully saved!");
                     this.Close();
                 }
-            }else if (spmsun_employees != null)
+            }
+            else if (spmsun_employees != null)
             {
                 if (x)
                 {
@@ -176,14 +197,25 @@ namespace SPMSUN_Inventory
                     this.Close();
                 }
             }
-            
+            else if(spmsun_members != null)
+            {
+                if (x)
+                {
+                    AddClientRecord("5");
+                    spmsun_members.dgvMembers.ItemsSource = loadEmployees("5");
+                    spmsun_members.dgvMembers.Items.Refresh();
+                    await this.ShowMessageAsync("ADD CLIENT", "Record successfully saved!");
+                    this.Close();
+                }
+            }
+
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-      
+
         private void AddClientRecord(string strClientType)
         {
             conDB = new ConnectionDB();
@@ -381,7 +413,7 @@ namespace SPMSUN_Inventory
         private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             bool x = await checkFields();
-            if(homeStockist != null)
+            if (homeStockist != null)
             {
                 if (x)
                 {
@@ -390,7 +422,8 @@ namespace SPMSUN_Inventory
                     await this.ShowMessageAsync("RECORD UPDATE", "Record updated successfully!");
                     this.Close();
                 }
-            }else if(megaStockist != null)
+            }
+            else if (megaStockist != null)
             {
                 if (x)
                 {
@@ -399,7 +432,8 @@ namespace SPMSUN_Inventory
                     await this.ShowMessageAsync("RECORD UPDATE", "Record updated successfully!");
                     this.Close();
                 }
-            }else if(depotStockist != null)
+            }
+            else if (depotStockist != null)
             {
                 if (x)
                 {
@@ -409,7 +443,26 @@ namespace SPMSUN_Inventory
                     this.Close();
                 }
             }
-           
+            else if (employeeStockist != null)
+            {
+                if (x)
+                {
+                    UpdateClientRecord("4", employeeStockist.ID);
+                    spmsun_employees.dgvclientemp.ItemsSource = loadClientStockist("4");
+                    await this.ShowMessageAsync("RECORD UPDATE", "Record updated successfully!");
+                    this.Close();
+                }
+            }
+            else if (membersModel != null)
+            {
+                if (x)
+                {
+                    UpdateClientRecord("5", membersModel.ID);
+                    spmsun_members.dgvMembers.ItemsSource = loadClientStockist("5");
+                    await this.ShowMessageAsync("RECORD UPDATE", "Record updated successfully!");
+                    this.Close();
+                }
+            }
         }
 
     }

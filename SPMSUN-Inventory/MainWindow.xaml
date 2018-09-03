@@ -8,9 +8,16 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:views="clr-namespace:SPMSUN_Inventory.views"
         mc:Ignorable="d"
-        Title="SPECTRUM" Height="430" Width="868" ResizeMode="NoResize" Loaded="MetroWindow_Loaded" WindowState="Maximized" Closing="MetroWindow_Closing">
+        Title="SPECTRUM" Height="532.761" Width="868" ResizeMode="NoResize" Loaded="MetroWindow_Loaded" WindowState="Maximized" Closing="MetroWindow_Closing">
     
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                <GradientStop Color="#C6FFDD" Offset="0"/>
+                <GradientStop Color="#f7797d" Offset="0.567"/>
+                <GradientStop Color="#FBD786" Offset="0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.Resources>
             <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuIconItem}">
                 <Grid Height="50">
@@ -113,6 +120,18 @@
                             <Image Source="image/96employee.png"/>
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
+
+                    <controls:HamburgerMenuIconItem x:Name="menuMembers" Label="Members">
+
+                        <controls:HamburgerMenuIconItem.Tag>
+                            <views:SPMSUN_Members />
+
+                        </controls:HamburgerMenuIconItem.Tag>
+                        <controls:HamburgerMenuIconItem.Icon>
+                            <Image Source="image/96employee.png"/>
+                        </controls:HamburgerMenuIconItem.Icon>
+                    </controls:HamburgerMenuIconItem>
+                    
                     <controls:HamburgerMenuIconItem x:Name="pendingBalance" Label="Pending Balance">
 
                         <controls:HamburgerMenuIconItem.Tag>

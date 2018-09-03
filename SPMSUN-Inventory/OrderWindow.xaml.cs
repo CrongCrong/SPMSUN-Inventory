@@ -25,6 +25,7 @@ namespace SPMSUN_Inventory
         MegaStockistModel megaStockistMod;
         DepotStockistModel depotStockistMod;
         EmployeeModel employeeStockistMod;
+        MembersModel membersMod;
 
         OrderHistoryModel orderHistory;
         List<PackageModel> lstPackages = new List<PackageModel>();
@@ -57,10 +58,15 @@ namespace SPMSUN_Inventory
             InitializeComponent();
         }
 
+        public OrderWindow(MembersModel memM)
+        {
+            membersMod = memM;
+            InitializeComponent();
+        }
 
         public OrderWindow(HomeStockistModel hsm, OrderHistoryModel ohm)
         {
-     
+
             orderHistory = ohm;
             homeStockistMod = hsm;
             InitializeComponent();
@@ -68,7 +74,7 @@ namespace SPMSUN_Inventory
 
         public OrderWindow(MegaStockistModel msm, OrderHistoryModel ohm)
         {
-  
+
             orderHistory = ohm;
             megaStockistMod = msm;
             InitializeComponent();
@@ -83,9 +89,17 @@ namespace SPMSUN_Inventory
 
         public OrderWindow(EmployeeModel dsm, OrderHistoryModel ohm)
         {
-            
+
             orderHistory = ohm;
             employeeStockistMod = dsm;
+            InitializeComponent();
+        }
+
+        public OrderWindow(MembersModel memM, OrderHistoryModel ohm)
+        {
+
+            orderHistory = ohm;
+            membersMod = memM;
             InitializeComponent();
         }
 
@@ -95,7 +109,11 @@ namespace SPMSUN_Inventory
             dblTotalView = 0.0;
             loadPackagesForCombo();
             loadProductsOnCombo();
-            txtName.Text = homeStockistMod != null ? homeStockistMod.Fullname : (megaStockistMod != null ? megaStockistMod.Fullname : (employeeStockistMod != null ? employeeStockistMod.Fullname : depotStockistMod.Fullname));
+            txtName.Text = homeStockistMod != null ? homeStockistMod.Fullname :
+                (megaStockistMod != null ? megaStockistMod.Fullname :
+                (employeeStockistMod != null ? employeeStockistMod.Fullname :
+                (depotStockistMod != null ? depotStockistMod.Fullname :
+                (membersMod != null ? membersMod.Fullname : ""))));
 
             txtName.IsEnabled = false;
             btnPayment.IsEnabled = false;
@@ -164,7 +182,12 @@ namespace SPMSUN_Inventory
                 "clientID = ? and orderID = ? AND isDeleted = 0";
 
             List<string> parameters = new List<string>();
-            parameters.Add(homeStockistMod != null ? homeStockistMod.ID : (megaStockistMod != null ? megaStockistMod.ID : (employeeStockistMod != null ? employeeStockistMod.ID : depotStockistMod.ID)));
+            parameters.Add(homeStockistMod != null ? homeStockistMod.ID :
+                (megaStockistMod != null ? megaStockistMod.ID :
+                (employeeStockistMod != null ? employeeStockistMod.ID :
+                (depotStockistMod != null ? depotStockistMod.ID :
+                (membersMod != null ? membersMod.ID : "0")))));
+
             parameters.Add(orderHistory.ID);
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
@@ -261,13 +284,13 @@ namespace SPMSUN_Inventory
                 else
                 {
                     iID = saveTransaction();
-                    if(lstPackages.Count != 0 && lstProducts.Count != 0)
+                    if (lstPackages.Count != 0 && lstProducts.Count != 0)
                     {
                         saveProductsAndPackages(iID.ToString());
                     }
                     btnPayment.IsEnabled = true;
                 }
-                
+
                 if (chkIfPaid.IsChecked == true)
                 {
                     addPayment(iID.ToString());
@@ -350,7 +373,11 @@ namespace SPMSUN_Inventory
                 "(?,?,?,?,?,?,0)";
 
             List<string> parameters = new List<string>();
-            parameters.Add(homeStockistMod != null ? homeStockistMod.ID : (megaStockistMod != null ? megaStockistMod.ID : (employeeStockistMod != null ? employeeStockistMod.ID : depotStockistMod.ID)));
+            parameters.Add(homeStockistMod != null ? homeStockistMod.ID :
+                (megaStockistMod != null ? megaStockistMod.ID :
+                (employeeStockistMod != null ? employeeStockistMod.ID :
+                (depotStockistMod != null ? depotStockistMod.ID :
+                (membersMod != null ? membersMod.ID : "0")))));
 
             DateTime date = DateTime.Parse(dateDR.Text);
             parameters.Add(date.Year + "-" + date.Month + "-" + date.Day);
@@ -372,12 +399,18 @@ namespace SPMSUN_Inventory
             if (chkCancelled.IsChecked.Value)
             {
                 parameters.Add("1");
-            }else
+            }
+            else
             {
                 parameters.Add("0");
             }
 
-            orderHistory.ClientID = homeStockistMod != null ? homeStockistMod.ID : (megaStockistMod != null ? megaStockistMod.ID : (employeeStockistMod != null ? employeeStockistMod.ID : depotStockistMod.ID));
+            orderHistory.ClientID = homeStockistMod != null ? homeStockistMod.ID : 
+                (megaStockistMod != null ? megaStockistMod.ID : 
+                (employeeStockistMod != null ? employeeStockistMod.ID : 
+                (depotStockistMod != null ? depotStockistMod.ID :
+                (membersMod != null ? membersMod.ID : "0"))));
+
             orderHistory.DRDate = dateDR.Text;
             orderHistory.DRNumber = txtDR.Text;
             orderHistory.Total = dblTotal.ToString();
@@ -408,7 +441,8 @@ namespace SPMSUN_Inventory
             if (chkCancelled.IsChecked == true)
             {
                 parameters.Add("1");
-            }else
+            }
+            else
             {
                 parameters.Add("0");
             }
@@ -459,7 +493,12 @@ namespace SPMSUN_Inventory
             conDB = new ConnectionDB();
             string queryString = "INSERT INTO dbpackage.tblpaymenthistory (clientID, orderID, amountpaid, date, isDeleted) VALUES (?,?,?,?,0)";
             List<string> parameters = new List<string>();
-            parameters.Add(homeStockistMod != null ? homeStockistMod.ID : (megaStockistMod != null ? megaStockistMod.ID : (employeeStockistMod != null ? employeeStockistMod.ID : depotStockistMod.ID)));
+            parameters.Add(homeStockistMod != null ? homeStockistMod.ID :
+                (megaStockistMod != null ? megaStockistMod.ID :
+                (employeeStockistMod != null ? employeeStockistMod.ID :
+                (depotStockistMod != null ? depotStockistMod.ID :
+                (membersMod != null ? membersMod.ID : "0")))));
+
             parameters.Add(strRecordID);
             parameters.Add(dblTotal.ToString());
 
@@ -518,11 +557,23 @@ namespace SPMSUN_Inventory
                     lblBalance.Content = dblTotal.ToString("N0");
                 }
 
-                else if(employeeStockistMod != null)
+                else if (employeeStockistMod != null)
                 {
                     buyPackage.ID = selectedPackage.ID;
                     buyPackage.Name = selectedPackage.Name;
                     buyPackage.Total = (Convert.ToDouble(selectedPackage.EmployeePrice) * Convert.ToDouble(txtQtyPackage.Text)).ToString();
+                    buyPackage.Qty = txtQtyPackage.Text;
+                    double tempTotal = Convert.ToDouble(lblTotal.Content);
+                    dblTotal = tempTotal + Convert.ToDouble(buyPackage.Total);
+
+                    lblTotal.Content = dblTotal.ToString("N0");
+                    lblBalance.Content = dblTotal.ToString("N0");
+                }
+                else if (membersMod != null)
+                {
+                    buyPackage.ID = selectedPackage.ID;
+                    buyPackage.Name = selectedPackage.Name;
+                    buyPackage.Total = (Convert.ToDouble(selectedPackage.MemberPrice) * Convert.ToDouble(txtQtyPackage.Text)).ToString();
                     buyPackage.Qty = txtQtyPackage.Text;
                     double tempTotal = Convert.ToDouble(lblTotal.Content);
                     dblTotal = tempTotal + Convert.ToDouble(buyPackage.Total);
@@ -585,11 +636,25 @@ namespace SPMSUN_Inventory
                     lblBalance.Content = dblTotal.ToString("N0");
                 }
 
-                else if(employeeStockistMod != null)
+                else if (employeeStockistMod != null)
                 {
                     buyProduct.ID = selectedProduct.ID;
                     buyProduct.Description = selectedProduct.Description;
                     buyProduct.Total = (Convert.ToDouble(selectedProduct.EmployeePrice) * Convert.ToDouble(txtQtyProduct.Text)).ToString();
+                    buyProduct.Qty = txtQtyProduct.Text;
+
+                    double tempTotal = Convert.ToDouble(lblTotal.Content);
+                    dblTotal = tempTotal + Convert.ToDouble(buyProduct.Total);
+
+                    lblTotal.Content = dblTotal.ToString("N0");
+                    lblBalance.Content = dblTotal.ToString("N0");
+
+                }
+                else if (membersMod != null)
+                {
+                    buyProduct.ID = selectedProduct.ID;
+                    buyProduct.Description = selectedProduct.Description;
+                    buyProduct.Total = (Convert.ToDouble(selectedProduct.MemberPrice) * Convert.ToDouble(txtQtyProduct.Text)).ToString();
                     buyProduct.Qty = txtQtyProduct.Text;
 
                     double tempTotal = Convert.ToDouble(lblTotal.Content);
@@ -627,24 +692,32 @@ namespace SPMSUN_Inventory
 
         private void btnPayment_Click(object sender, RoutedEventArgs e)
         {
-            if(homeStockistMod != null)
+            if (homeStockistMod != null)
             {
                 AddPaymentWindow addPay = new AddPaymentWindow(this, homeStockistMod, orderHistory);
                 addPay.ShowDialog();
 
-            }else if(megaStockistMod != null)
+            }
+            else if (megaStockistMod != null)
             {
                 AddPaymentWindow addPay = new AddPaymentWindow(this, megaStockistMod, orderHistory);
                 addPay.ShowDialog();
-            }else if(depotStockistMod != null)
+            }
+            else if (depotStockistMod != null)
             {
                 AddPaymentWindow addPay = new AddPaymentWindow(this, depotStockistMod, orderHistory);
                 addPay.ShowDialog();
-            }else if(employeeStockistMod != null)
+            }
+            else if (employeeStockistMod != null)
             {
                 AddPaymentWindow addPay = new AddPaymentWindow(this, employeeStockistMod, orderHistory);
                 addPay.ShowDialog();
 
+            }
+            else if(membersMod != null)
+            {
+                AddPaymentWindow addPay = new AddPaymentWindow(this, membersMod, orderHistory);
+                addPay.ShowDialog();
             }
         }
 

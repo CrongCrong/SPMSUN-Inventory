@@ -51,7 +51,7 @@
                 Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="431,530,0,0" VerticalAlignment="Top" Width="75" Height="75" Click="btnSave_Click" 
                 Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="431,530,0,0" VerticalAlignment="Top" Width="75" Height="75" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black" Click="btnUpdate_Click"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="410,529,0,0" VerticalAlignment="Top" Width="75" Height="75" Style="{DynamicResource MetroCircleButtonStyle}" Background="#6599FF" BorderBrush="Black" Click="btnUpdate_Click"/>
         <Button x:Name="btnQtyPackage" Content="Add" HorizontalAlignment="Left" Margin="511,109,0,0" VerticalAlignment="Top" Width="59" Height="31" Click="btnQtyPackage_Click"/>
         <Button x:Name="btnQtyProduct" Content="Add" HorizontalAlignment="Left" Margin="511,146,0,0" VerticalAlignment="Top" Width="59" Height="30" Click="btnQtyProduct_Click"/>
         <Label x:Name="label6" Content="Total:" HorizontalAlignment="Left" Margin="10,381,0,0" VerticalAlignment="Top" FontSize="17"/>

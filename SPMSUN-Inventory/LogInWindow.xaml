@@ -7,13 +7,15 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:SPMSUN_Inventory"
         mc:Ignorable="d"
-        Title="SPECTRUM" Height="324.468" Width="660.638" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize">
+        Title="SPECTRUM" Height="324.468" Width="660.638" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="64,94,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Arial Unicode MS" Width="115" HorizontalContentAlignment="Right"/>
-        <Label x:Name="label1" Content="Password:" HorizontalAlignment="Left" Margin="64,135,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Arial Unicode MS" HorizontalContentAlignment="Right" Width="115"/>
-        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="31" Margin="184,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="16" FontFamily="Arial Unicode MS" TabIndex="1"/>
-        <Button x:Name="btnLogIn" Content="Log in" HorizontalAlignment="Left" Height="35" Margin="184,171,0,0" VerticalAlignment="Top" Width="192" Click="btnLogIn_Click" TabIndex="3"/>
-        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="184,135,0,0" VerticalAlignment="Top" Height="31" Width="192" TabIndex="2" FontSize="16" FontFamily="Arial Unicode MS" KeyDown="txtPassword_KeyDown"/>
+        <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="36,112,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Arial Unicode MS" Width="115" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label1" Content="Password:" HorizontalAlignment="Left" Margin="36,153,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Arial Unicode MS" HorizontalContentAlignment="Right" Width="115"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="31" Margin="156,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" FontSize="16" FontFamily="Arial Unicode MS" TabIndex="1"/>
+        <Button x:Name="btnLogIn" Content="Log in" HorizontalAlignment="Left" Height="35" Margin="156,189,0,0" VerticalAlignment="Top" Width="192" Click="btnLogIn_Click" TabIndex="3"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="156,153,0,0" VerticalAlignment="Top" Height="31" Width="192" TabIndex="2" FontSize="16" FontFamily="Arial Unicode MS" KeyDown="txtPassword_KeyDown"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="275" Margin="381,10,0,0" VerticalAlignment="Top" Width="263" Source="image/warehouse-inventory.png"/>
+        <Image x:Name="image1" HorizontalAlignment="Left" Height="66" Margin="10,10,0,0" VerticalAlignment="Top" Width="199" Source="image/logo.png"/>
 
     </Grid>
 </controls:MetroWindow>

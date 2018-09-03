@@ -25,6 +25,7 @@ namespace SPMSUN_Inventory
         MegaStockistModel megaStockModel;
         DepotStockistModel depotStockModel;
         EmployeeModel employeesModel;
+        MembersModel membersModel;
 
         OrderHistoryModel orderHistory;
         double dblTotalPaid = 0.0;
@@ -34,7 +35,7 @@ namespace SPMSUN_Inventory
         {
             orderWin = ow;
             homeStockModel = hsm;
-            orderHistory = ohm;          
+            orderHistory = ohm;
             InitializeComponent();
         }
 
@@ -63,6 +64,14 @@ namespace SPMSUN_Inventory
             InitializeComponent();
         }
 
+        public AddPaymentWindow(OrderWindow ow, MembersModel mm, OrderHistoryModel ohm)
+        {
+            orderWin = ow;
+            membersModel = mm;
+            orderHistory = ohm;
+            InitializeComponent();
+        }
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (homeStockModel != null)
@@ -81,11 +90,12 @@ namespace SPMSUN_Inventory
                     }
                     btnDelete.Visibility = Visibility.Hidden;
                 }
-            }else if (megaStockModel != null)
+            }
+            else if (megaStockModel != null)
             {
                 dgvPaymentHistory.ItemsSource = getMegaStockistPaymentHistory();
                 lblTotalPaid.Content = dblTotalPaid.ToString("N0");
- 
+
                 if (orderHistory != null)
                 {
                     if (orderHistory.ifPaid.Equals("YES"))
@@ -97,7 +107,8 @@ namespace SPMSUN_Inventory
                     }
                     btnDelete.Visibility = Visibility.Hidden;
                 }
-            }else if (depotStockModel != null)
+            }
+            else if (depotStockModel != null)
             {
                 dgvPaymentHistory.ItemsSource = getDepotStockistPaymentHistory();
                 lblTotalPaid.Content = dblTotalPaid.ToString("N0");
@@ -113,11 +124,12 @@ namespace SPMSUN_Inventory
                     }
                     btnDelete.Visibility = Visibility.Hidden;
                 }
-            }else if (employeesModel != null)
+            }
+            else if (employeesModel != null)
             {
                 dgvPaymentHistory.ItemsSource = getEmployeePaymentHistory();
                 lblTotalPaid.Content = dblTotalPaid.ToString("N0");
- 
+
                 if (orderHistory != null)
                 {
                     if (orderHistory.ifPaid.Equals("YES"))
@@ -129,7 +141,24 @@ namespace SPMSUN_Inventory
                     }
                     btnDelete.Visibility = Visibility.Hidden;
                 }
-            }           
+            }
+            else if (membersModel != null)
+            {
+                dgvPaymentHistory.ItemsSource = getMembersPaymentHistory();
+                lblTotalPaid.Content = dblTotalPaid.ToString("N0");
+
+                if (orderHistory != null)
+                {
+                    if (orderHistory.ifPaid.Equals("YES"))
+                    {
+                        datePaid.IsEnabled = false;
+                        txtAmount.IsEnabled = false;
+                        txtNotes.IsEnabled = false;
+                        btnAdd.IsEnabled = false;
+                    }
+                    btnDelete.Visibility = Visibility.Hidden;
+                }
+            }
         }
 
         private async Task<bool> checkField()
@@ -318,6 +347,44 @@ namespace SPMSUN_Inventory
 
         }
 
+        private List<PaymentHistoryModel> getMembersPaymentHistory()
+        {
+            conDB = new ConnectionDB();
+            List<PaymentHistoryModel> lstPayments = new List<PaymentHistoryModel>();
+            PaymentHistoryModel payment = new PaymentHistoryModel();
+
+            string queryString = "SELECT ID, amountpaid, date, notes FROM dbpackage.tblpaymenthistory WHERE isDeleted = 0 AND clientID = ? AND orderID = ?";
+            List<string> parameters = new List<string>();
+            parameters.Add(membersModel.ID);
+            parameters.Add(orderHistory.ID);
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
+
+            while (reader.Read())
+            {
+                payment.ID = reader["ID"].ToString();
+                payment.AmountPaid = reader["amountpaid"].ToString();
+                double amtPaid = Convert.ToDouble(payment.AmountPaid);
+                dblTotalPaid = dblTotalPaid + amtPaid;
+
+                payment.Date = Convert.ToDateTime(reader["date"].ToString()).ToShortDateString();
+                if (string.IsNullOrEmpty(reader["notes"].ToString()))
+                {
+                    payment.Notes = "";
+                }
+                else
+                {
+                    payment.Notes = reader["notes"].ToString();
+                }
+
+                lstPayments.Add(payment);
+                payment = new PaymentHistoryModel();
+            }
+            conDB.closeConnection();
+            return lstPayments;
+        }
+
+
         private void addHomeStockistPayment()
         {
             conDB = new ConnectionDB();
@@ -339,9 +406,7 @@ namespace SPMSUN_Inventory
                 parameters.Add(txtNotes.Text);
             }
 
-
             conDB.AddRecordToDatabase(queryString, parameters);
-
             conDB.closeConnection();
         }
 
@@ -366,9 +431,7 @@ namespace SPMSUN_Inventory
                 parameters.Add(txtNotes.Text);
             }
 
-
             conDB.AddRecordToDatabase(queryString, parameters);
-
             conDB.closeConnection();
         }
 
@@ -420,17 +483,40 @@ namespace SPMSUN_Inventory
                 parameters.Add(txtNotes.Text);
             }
 
+            conDB.AddRecordToDatabase(queryString, parameters);
+            conDB.closeConnection();
+        }
+
+        private void addMembersPayment()
+        {
+            conDB = new ConnectionDB();
+            string queryString = "INSERT INTO dbpackage.tblpaymenthistory (clientID, orderID, amountpaid, date, notes, isDeleted) VALUES (?,?,?,?,?,0)";
+            List<string> parameters = new List<string>();
+            parameters.Add(membersModel.ID);
+            parameters.Add(orderHistory.ID);
+            parameters.Add(txtAmount.Text);
+
+            DateTime date = DateTime.Parse(datePaid.Text);
+            parameters.Add(date.Year + "-" + date.Month + "-" + date.Day);
+
+            if (string.IsNullOrEmpty(txtNotes.Text))
+            {
+                parameters.Add("");
+            }
+            else
+            {
+                parameters.Add(txtNotes.Text);
+            }
 
             conDB.AddRecordToDatabase(queryString, parameters);
-
             conDB.closeConnection();
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             bool x = await checkField();
-            
-            if(homeStockModel != null)
+
+            if (homeStockModel != null)
             {
                 if (x)
                 {
@@ -450,7 +536,9 @@ namespace SPMSUN_Inventory
 
                     this.Close();
                 }
-            }else if(megaStockModel != null){
+            }
+            else if (megaStockModel != null)
+            {
                 if (x)
                 {
                     addMegaStockistPayment();
@@ -469,7 +557,8 @@ namespace SPMSUN_Inventory
 
                     this.Close();
                 }
-            }else if(depotStockModel != null)
+            }
+            else if (depotStockModel != null)
             {
                 if (x)
                 {
@@ -489,7 +578,8 @@ namespace SPMSUN_Inventory
 
                     this.Close();
                 }
-            }else if(employeesModel != null)
+            }
+            else if (employeesModel != null)
             {
                 if (x)
                 {
@@ -508,7 +598,27 @@ namespace SPMSUN_Inventory
                     }
                     this.Close();
                 }
-            } 
+            }
+            else if (membersModel != null)
+            {
+                if (x)
+                {
+                    addMembersPayment();
+                    await this.ShowMessageAsync("ADD PAYMENT", "Record successfully saved!");
+                    double paid = getMembersBalanceOnDR();
+                    double oh = Convert.ToDouble(orderHistory.Total);
+                    if (paid == oh)
+                    {
+                        orderWin.chkIfPaid.IsChecked = true;
+                        updateRecordToPaid();
+                    }
+                    else
+                    {
+                        orderWin.lblBalance.Content = (oh - paid).ToString("N0");
+                    }
+                    this.Close();
+                }
+            }
         }
 
         private void updateRecordToPaid()
@@ -611,6 +721,28 @@ namespace SPMSUN_Inventory
             return dblBalance;
         }
 
+        private double getMembersBalanceOnDR()
+        {
+            double dblBalance = 0.0;
+
+            conDB = new ConnectionDB();
+            string queryString = "SELECT sum(amountpaid) as total FROM dbpackage.tblpaymenthistory WHERE " +
+                "clientID = ? and orderID = ? AND isDeleted = 0";
+
+            List<string> parameters = new List<string>();
+            parameters.Add(membersModel.ID);
+            parameters.Add(orderHistory.ID);
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
+
+            while (reader.Read())
+            {
+                dblBalance = Convert.ToDouble(reader["total"].ToString());
+            }
+
+            return dblBalance;
+        }
+
         private void deletePaymentRecord(string strRecordID)
         {
             conDB = new ConnectionDB();
@@ -643,13 +775,62 @@ namespace SPMSUN_Inventory
 
                     await this.ShowMessageAsync("Delete Record", "Record deleted successfully!");
                 }
-            } else if (payment != null && megaStockModel != null)
+            }
+            else if (payment != null && megaStockModel != null)
             {
                 MessageDialogResult result = await this.ShowMessageAsync("Delete Record", "Are you sure you want to delete record?", MessageDialogStyle.AffirmativeAndNegative);
                 if (result.Equals(MessageDialogResult.Affirmative))
                 {
                     deletePaymentRecord(payment.ID);
                     dgvPaymentHistory.ItemsSource = getMegaStockistPaymentHistory();
+                    dgvPaymentHistory.Items.Refresh();
+                    lblTotalPaid.Content = (Convert.ToDouble(dblTotalPaid) - Convert.ToDouble(payment.AmountPaid)).ToString();
+                    double dblLblBalance = Convert.ToDouble(orderWin.lblBalance.Content);
+                    dblLblBalance = dblLblBalance + Convert.ToDouble(payment.AmountPaid);
+                    orderWin.lblBalance.Content = dblLblBalance.ToString("N0");
+
+                    await this.ShowMessageAsync("Delete Record", "Record deleted successfully!");
+                }
+            }
+            else if (payment != null && depotStockModel != null)
+            {
+                MessageDialogResult result = await this.ShowMessageAsync("Delete Record", "Are you sure you want to delete record?", MessageDialogStyle.AffirmativeAndNegative);
+                if (result.Equals(MessageDialogResult.Affirmative))
+                {
+                    deletePaymentRecord(payment.ID);
+                    dgvPaymentHistory.ItemsSource = getDepotStockistPaymentHistory();
+                    dgvPaymentHistory.Items.Refresh();
+                    lblTotalPaid.Content = (Convert.ToDouble(dblTotalPaid) - Convert.ToDouble(payment.AmountPaid)).ToString();
+                    double dblLblBalance = Convert.ToDouble(orderWin.lblBalance.Content);
+                    dblLblBalance = dblLblBalance + Convert.ToDouble(payment.AmountPaid);
+                    orderWin.lblBalance.Content = dblLblBalance.ToString("N0");
+
+                    await this.ShowMessageAsync("Delete Record", "Record deleted successfully!");
+                }
+            }
+            else if (payment != null && employeesModel != null)
+            {
+                MessageDialogResult result = await this.ShowMessageAsync("Delete Record", "Are you sure you want to delete record?", MessageDialogStyle.AffirmativeAndNegative);
+                if (result.Equals(MessageDialogResult.Affirmative))
+                {
+                    deletePaymentRecord(payment.ID);
+                    dgvPaymentHistory.ItemsSource = getEmployeePaymentHistory();
+                    dgvPaymentHistory.Items.Refresh();
+                    lblTotalPaid.Content = (Convert.ToDouble(dblTotalPaid) - Convert.ToDouble(payment.AmountPaid)).ToString();
+                    double dblLblBalance = Convert.ToDouble(orderWin.lblBalance.Content);
+                    dblLblBalance = dblLblBalance + Convert.ToDouble(payment.AmountPaid);
+                    orderWin.lblBalance.Content = dblLblBalance.ToString("N0");
+
+                    await this.ShowMessageAsync("Delete Record", "Record deleted successfully!");
+                }
+            }
+            else if (payment != null && membersModel != null)
+            {
+                MessageDialogResult result = await this.ShowMessageAsync("Delete Record", "Are you sure you want to delete record?", MessageDialogStyle.AffirmativeAndNegative);
+                if (result.Equals(MessageDialogResult.Affirmative))
+                {
+                    deletePaymentRecord(payment.ID);
+                    dgvPaymentHistory.ItemsSource = getMembersPaymentHistory();
                     dgvPaymentHistory.Items.Refresh();
                     lblTotalPaid.Content = (Convert.ToDouble(dblTotalPaid) - Convert.ToDouble(payment.AmountPaid)).ToString();
                     double dblLblBalance = Convert.ToDouble(orderWin.lblBalance.Content);

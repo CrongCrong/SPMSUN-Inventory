@@ -25,6 +25,8 @@ namespace SPMSUN_Inventory
         PackagesWindow packageWindow;
         PackageModel packageMod;
         public bool ifView = false;
+        List<ProductModel> lstProductsToAdd = new List<ProductModel>();
+
 
         public PackageDetails(PackagesWindow pw, PackageModel pm)
         {
@@ -103,12 +105,14 @@ namespace SPMSUN_Inventory
             if (x)
             {
                 packageID = AddPackageName();
+                AddProductToPackage(packageID.ToString());
                 await this.ShowMessageAsync("Add Package", "Package added successfully!");
                 cmbProducts.IsEnabled = true;
                 txtQty.IsEnabled = true;
                 btnAdd.IsEnabled = true;
+                packageWindow.dgvPackageList.ItemsSource = loadDataGridDetails();
+                this.Close();
             }
-
         }
 
         private List<PackageModel> loadDataGridDetails()
@@ -170,9 +174,10 @@ namespace SPMSUN_Inventory
         {
             conDB = new ConnectionDB();
 
-            string queryString = "INSERT INTO dbpackage.tblpackage (name, nonmemberprice, memberprice, homeprice, megaprice, depotprice, employeeprice," +
+            string queryString = "INSERT INTO dbpackage.tblpackage (name, nonmemberprice, memberprice, " +
+                "homeprice, megaprice, depotprice, employeeprice," +
                 " MFG, unilevel, lb, isDeleted)  " +
-                "VALUES (?,?,?,?,?,?,?,?,?,0)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?,0)";
             List<string> parameters = new List<string>();
             parameters.Add(txtPackageName.Text);
             parameters.Add(txtNonMemberPrice.Text);
@@ -211,6 +216,23 @@ namespace SPMSUN_Inventory
 
             conDB.AddRecordToDatabase(queryString, parameters);
             conDB.closeConnection();
+        }
+
+        private void AddProductToPackage(string packageIDfromSave)
+        {
+            conDB = new ConnectionDB();
+            string queryString = "INSERT INTO dbpackage.tblpackageproduct (productID, packageID, qty, isDeleted) VALUES (?,?,?,0)";
+            List<string> parameters;
+
+            foreach(ProductModel pp in lstProductsToAdd)
+            {
+                parameters = new List<string>();
+                parameters.Add(pp.ID);
+                parameters.Add(packageIDfromSave);
+                parameters.Add(pp.Qty);
+                conDB.AddRecordToDatabase(queryString, parameters);
+                conDB.closeConnection();
+            }
         }
 
         private void updateProductPackage(string strRecordID)
@@ -327,23 +349,37 @@ namespace SPMSUN_Inventory
             return ifAllCorrect;
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (packageMod == null)
+            bool x = await checkField();
+
+            if (x)
             {
-                AddProductToPackage(packageID);
-                dgvProductLink.ItemsSource = getProductsForPackage(packageID.ToString());
-                packageMod = new PackageModel();
-                packageMod.ID = packageID.ToString();
-            }
-            else
-            {
-                AddProductToPackage(Convert.ToInt32(packageMod.ID));
-                dgvProductLink.ItemsSource = getProductsForPackage(packageMod.ID);
-            }
+                if (packageMod == null)
+                {
+                    ProductModel p = cmbProducts.SelectedItem as ProductModel;
+                    p.Qty = string.IsNullOrEmpty(txtQty.Text) ? "0" : txtQty.Text;
+
+                    lstProductsToAdd.Add(p);
+                    p = new ProductModel();
+                    //AddProductToPackage(packageID);
+                    //dgvProductLink.ItemsSource = getProductsForPackage(packageID.ToString());
+                    dgvProductLink.ItemsSource = lstProductsToAdd;
+                    dgvProductLink.Items.Refresh();
+                    //packageMod = new PackageModel();
+                    //packageMod.ID = packageID.ToString();
+                }
+                else
+                {
+                    AddProductToPackage(Convert.ToInt32(packageMod.ID));
+                    dgvProductLink.ItemsSource = getProductsForPackage(packageMod.ID);
+                }
 
 
-            packageWindow.dgvPackageList.ItemsSource = loadDataGridDetails();
+                //packageWindow.dgvPackageList.ItemsSource = loadDataGridDetails();
+            }
+
+            
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
@@ -411,5 +447,9 @@ namespace SPMSUN_Inventory
             CheckIsNumeric(e);
         }
 
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //dgvProductLink.Items.Clear();
+        }
     }
 }

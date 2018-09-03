@@ -52,7 +52,7 @@ namespace SPMSUN_Inventory.views
                             finalPBM.UnpaidAmount = Convert.ToDouble(pbm.Total).ToString("N0");
                         }else
                         {
-                            finalPBM.UnpaidAmount = Convert.ToDouble(sum).ToString("N0");
+                            finalPBM.UnpaidAmount = (y).ToString("N0");
                         }
                         
                     }
@@ -76,7 +76,7 @@ namespace SPMSUN_Inventory.views
             string queryString = "SELECT tblclients.ID, firstname, lastname, drNo, total FROM " +
                 "(dbpackage.tblorderhistory INNER JOIN dbpackage.tblclients ON " +
                 "dbpackage.tblorderhistory.clientID = dbpackage.tblclients.ID) " +
-                "WHERE(dbpackage.tblorderhistory.isDeleted = 0) AND (dbpackage.tblclients.isDeleted = 0) AND isPaid = 0 AND dbpackage.tblorderhistory.isCancelled = 0";
+                "WHERE (dbpackage.tblorderhistory.isDeleted = 0) AND (dbpackage.tblclients.isDeleted = 0) AND isPaid = 0 AND dbpackage.tblorderhistory.isCancelled = 0";
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
 
@@ -104,7 +104,7 @@ namespace SPMSUN_Inventory.views
             PendingBalanceModel pending = new PendingBalanceModel();
 
             string queryString = "SELECT dbpackage.tblclients.ID, firstname, lastname, orderID, " +
-                "total - sum(amountpaid) as pending, total, isPaid FROM((dbpackage.tblpaymenthistory " +
+                "total - sum(amountpaid) as pending, total, isPaid FROM ((dbpackage.tblpaymenthistory " +
                 "INNER JOIN dbpackage.tblorderhistory ON dbpackage.tblpaymenthistory.orderID = dbpackage.tblorderhistory.ID) " +
                 "INNER JOIN dbpackage.tblclients ON dbpackage.tblpaymenthistory.clientID = dbpackage.tblclients.ID) " +
                 "WHERE dbpackage.tblorderhistory.isDeleted = 0 and dbpackage.tblpaymenthistory.isDeleted = 0 " +

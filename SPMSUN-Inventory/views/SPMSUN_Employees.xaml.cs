@@ -352,10 +352,13 @@ namespace SPMSUN_Inventory.views
 
         private void btnEditClient_Click(object sender, RoutedEventArgs e)
         {
-            DepotStockistModel depotStck = dgvclientemp.SelectedItem as DepotStockistModel;
-
-            AddClientWindow acw = new AddClientWindow(this, viewEmployee);
-            acw.ShowDialog();
+            EmployeeModel empS = dgvclientemp.SelectedItem as EmployeeModel;
+            if (empS != null)
+            {
+                AddClientWindow acw = new AddClientWindow(this, empS);
+                acw.ShowDialog();
+            }
+            
         }
 
         private async void btnAddDR_Click(object sender, RoutedEventArgs e)
